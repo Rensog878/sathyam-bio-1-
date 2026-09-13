@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    // Visitors get the storefront page itself, never inside an iframe. An
+    // iframe sized 100vh is taller than a phone screen while the browser
+    // toolbar is showing, which hid the storefront's fixed bottom navigation
+    // below the screen and stopped the address bar from auto-hiding. This runs
+    // before the app bundle and Razorpay load, so the redirect is instant.
+    // Staff sessions continue into their React portals.
+    (function () {
+      var path = location.pathname;
+      if (path !== '/' && path !== '/index.html') return;
+      var role;
+      try { role = (JSON.parse(localStorage.getItem('sathya_user') || 'null') || {}).role; } catch (e) {}
+      if (['admin', 'employee', 'delivery', 'billing'].indexOf(role) === -1) {
+        location.replace('/storefront.html' + location.search + location.hash);
+      }
+    })();
+  </script>
+  <meta name="description" content="Sathya Bio - India's Leading Agricultural E-Commerce, Crop Protection & ERP Platform for Farmers" />
+  <meta name="keywords" content="pesticides, agro chemicals, crop protection, bio pesticides, fertilizers, farmer portal, agricultural ERP" />
+  <title>Sathya Bio - India's Agro Pesticides, Crop Protection & Agricultural ERP Platform</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Razorpay Checkout SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Schema.org JSON-LD for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AgricultureStore",
+    "name": "Sathya Bio",
+    "description": "India's Leading Agro Pesticides, Crop Protection & Agricultural ERP Platform",
+    "url": "https://sathyambio.com",
+    "telephone": "+91-98450-12345",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Coimbatore",
+      "addressRegion": "Tamil Nadu",
+      "addressCountry": "IN"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
